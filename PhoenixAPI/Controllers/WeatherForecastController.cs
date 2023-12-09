@@ -30,7 +30,7 @@ namespace PhoenixAPI.Controllers
             .ToArray();
         }
 
-        [HttpGet(Name = "GetTemerature")]
+        [HttpGet("GetTemerature")]
         public int Get(int id)
         {
             if (id != 1) return 0;
