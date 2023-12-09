@@ -8,3 +8,6 @@
 
 # Exclude VS directory
 .vs/
+
+# Exclude TestResults Directory
+**/TestResults
