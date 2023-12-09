@@ -2,3 +2,9 @@
 # Exclude bin directory
 # Exclude bin directory
 **/bin/
+
+# Exclude obj directory
+**/obj/
+
+# Exclude VS directory
+.vs/
