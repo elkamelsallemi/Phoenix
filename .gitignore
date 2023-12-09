@@ -12,5 +12,5 @@
 # Exclude TestResults Directory
 **/TestResults
 
-# Exclude TestResults Directory
-**/TestResults
+# Exclude CodeCoverage Directory
+CodeCoverage/
