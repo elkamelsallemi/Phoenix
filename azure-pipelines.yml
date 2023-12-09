@@ -10,7 +10,7 @@ pool:
   name: 'Default'
 
 variables:
-  solution: '**/*.sln'
+  solution: '**/PhoenixAPI.csproj'  # Update this to match the path to your PhoenixAPI project file
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
@@ -32,3 +32,4 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
