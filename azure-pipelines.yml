@@ -57,8 +57,6 @@ stages:
     pool:
       name: 'Default'
     environment: prod
-    variables:
-    - group: Release
     strategy:
       runOnce:
         deploy:
