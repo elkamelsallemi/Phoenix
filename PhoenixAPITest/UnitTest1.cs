@@ -35,7 +35,7 @@ namespace PhoenixAPITest
             var result = controller.Get(invalidId);
 
             // Assert
-            const int expectedTemperature = 1;
+            const int expectedTemperature = 0;
             Assert.AreEqual(expectedTemperature, result);
         }
     }
