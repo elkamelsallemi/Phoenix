@@ -17,11 +17,6 @@ variables:
 steps:
 - task: NuGetToolInstaller@1
 
-- task: UseDotNet@2
-  inputs:
-    packageType: 'sdk'
-    version: '6.x'  # Replace with the desired .NET SDK version
-
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
@@ -32,6 +27,13 @@ steps:
     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Install .NET tools from local manifest'
+  inputs:
+    command: custom
+    custom: tool
+    arguments: 'restore'
 
 - task: DotNetCoreCLI@2
   displayName: 'Publish the project - $(buildConfiguration)'
