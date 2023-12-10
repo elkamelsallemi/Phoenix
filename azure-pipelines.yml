@@ -17,6 +17,11 @@ variables:
 steps:
 - task: NuGetToolInstaller@1
 
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '6.x.x'  # Replace with the desired .NET SDK version
+    
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
@@ -32,7 +37,7 @@ steps:
   displayName: 'Publish the project - $(buildConfiguration)'
   inputs:
     command: 'publish'
-    projects: '$(solution)'
+    projects: '**/PhoenixAPI.csproj'
     publishWebProjects: false
     arguments: '--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(buildConfiguration)'
     zipAfterPublish: true
