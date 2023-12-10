@@ -1,7 +1,7 @@
-# ASP.NET
-# Build and test ASP.NET projects.
-# Add steps that publish symbols, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
+# This Azure DevOps Pipeline automates the build and deployment process for a web application.
+# It consists of two stages: 'Build' and 'Deploy'. The 'Build' stage compiles and publishes
+# the web application, while the 'Deploy' stage deploys the application to an Azure App Service.
+# author : Mr. Sallemi Elkamel
 
 trigger:
 - main
@@ -19,17 +19,20 @@ stages:
       name: 'Default'
 
     steps:
+    # Step 1: Use the specified version of .NET Core SDK
     - task: UseDotNet@2
       displayName: 'Use .NET Core sdk 6.x'
       inputs:
         version: 6.x
 
+    # Step 2: Restore project dependencies
     - task: DotNetCoreCLI@2
       displayName: 'Restore project dependencies'
       inputs:
         command: 'restore'
         projects: '**/*.csproj'
 
+    # Step 3: Build the project using the specified build configuration
     - task: DotNetCoreCLI@2
       displayName: 'Build the project - $(buildConfiguration)'
       inputs:
@@ -37,6 +40,7 @@ stages:
         arguments: '--no-restore --configuration $(buildConfiguration)'
         projects: '**/*.csproj'
 
+    # Step 4: Publish the project to the specified output directory
     - task: DotNetCoreCLI@2
       displayName: 'Publish the project - $(buildConfiguration)'
       inputs:
@@ -46,6 +50,7 @@ stages:
         arguments: '--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(buildConfiguration)'
         zipAfterPublish: true
 
+    # Step 5: Publish the build artifacts for deployment
     - publish: '$(Build.ArtifactStagingDirectory)'
       artifact: drop
 
@@ -63,11 +68,16 @@ stages:
       runOnce:
         deploy:
           steps:
+          # Step 6: Download the published artifacts from the Build stage
           - download: current
             artifact: drop
+
+          # Step 7: Deploy the application to Azure App Service
           - task: AzureWebApp@1
             displayName: 'Azure App Service Deploy: website'
             inputs:
               azureSubscription: 'Resource-management-CodeHub'
               appName: '$(web-app-name)'
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
+              
+# author : Mr. Sallemi Elkamel
