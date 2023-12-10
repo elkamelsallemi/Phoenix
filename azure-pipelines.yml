@@ -11,7 +11,7 @@ variables:
   releaseBranchName: 'release'
 
 schedules:
-- cron: '11 23 * * *'
+- cron: '16 23 * * *'
   displayName: 'Deploy every day at 11:11 P.M.'
   branches:
     include:
@@ -119,4 +119,5 @@ stages:
               appName: '$(WebAppNameTest)'
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
 
-# author : Mr. Sallemi Elkamel
+
+# author :  Mr. Sallemi Elkamel
