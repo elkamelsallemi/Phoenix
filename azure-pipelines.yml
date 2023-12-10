@@ -20,8 +20,8 @@ steps:
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
-    version: '6.x.x'  # Replace with the desired .NET SDK version
-    
+    version: '6.x'  # Replace with the desired .NET SDK version
+
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
