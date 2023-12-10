@@ -8,3 +8,12 @@
 
 # Exclude VS directory
 .vs/
+
+# Exclude PhoenixAPITest directory
+PhoenixAPITest/
+
+# Exclude PhoenixAPITest directory
+PhoenixAPITest/
+
+# Exclude CodeCoverage directory
+CodeCoverage/
