@@ -10,6 +10,14 @@ variables:
   buildConfiguration: 'Release'
   releaseBranchName: 'release'
 
+schedules:
+- cron: '11 23 * * *'
+  displayName: 'Deploy every day at 11:11 P.M.'
+  branches:
+    include:
+    - release
+  always: false 
+
 stages:
 - stage: 'Build'
   displayName: 'Build the web application'
@@ -85,6 +93,30 @@ stages:
             inputs:
               azureSubscription: 'Resource-management-CodeHub'
               appName: '$(WebAppNameDev)'
+              package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
+
+- stage: 'Test'
+  displayName: 'Deploy to the test environment'
+  dependsOn: Dev
+  condition: eq(variables['Build.Reason'], 'Schedule')
+  jobs:
+  - deployment: Deploy
+    pool:
+      name: 'Default'
+    environment: test
+    variables:
+    - group: 'Release'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: drop
+          - task: AzureWebApp@1
+            displayName: 'Azure App Service Deploy: website Test'
+            inputs:
+              azureSubscription: 'Resource-management-CodeHub'
+              appName: '$(WebAppNameTest)'
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
 
 # author : Mr. Sallemi Elkamel
