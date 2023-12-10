@@ -138,7 +138,7 @@ stages:
           - task: AzureWebApp@1
             displayName: 'Azure App Service Deploy: website Release'
             inputs:
-              azureSubscription: 'Resource-management-CodeHub
+              azureSubscription: 'Resource-management-CodeHub'
               appName: '$(WebAppNameStaging)'
               package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
 
