@@ -5,10 +5,6 @@
 
 pool:
   name: 'Default'
-  demands:
-  - msbuild
-  - visualstudio
-  - vstest
 
 variables:
   ArtifactName: 'drop'
@@ -19,45 +15,38 @@ steps:
   inputs:
     version: 6.x
 
-- task: NuGetToolInstaller@0
-  displayName: 'Use NuGet 5.x'
-  inputs:
-    versionSpec: 5.x
-    checkLatest: true
+# - task: NuGetToolInstaller@0
+#   displayName: 'Use NuGet 5.x'
+#   inputs:
+#     versionSpec: 5.x
+#     checkLatest: true
 
-- task: NuGetCommand@2
-  displayName: 'NuGet restore'
+# - task: NuGetCommand@2
+#   displayName: 'NuGet restore'
 
-- task: VSBuild@1
-  displayName: 'Build solution'
+- task: DotNetCoreCLI@2
+  displayName: 'Restore project dependencies'
   inputs:
-    solution: '**/PhoenixAPI.csproj'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactstagingdirectory)\\"'
-    platform: '$(BuildPlatform)'
-    configuration: '$(BuildConfiguration)'
-    restoreNugetPackages: true
+    command: 'restore'
+    projects: '**/*.csproj'
 
-- task: VSTest@2
-  displayName: 'Test Assemblies'
+- task: DotNetCoreCLI@2
+  displayName: 'Build the project - $(buildConfiguration)'
   inputs:
-    testAssemblyVer2: |
-     **\$(BuildConfiguration)\*test*.dll
-     !**\obj\**
-    platform: '$(BuildPlatform)'
-    configuration: '$(BuildConfiguration)'
+    command: 'build'
+    arguments: '--no-restore --configuration $(buildConfiguration)'
+    projects: '**/*.csproj'
 
-- task: PublishSymbols@2
-  displayName: 'Publish symbols path'
+- task: DotNetCoreCLI@2
+  displayName: 'Publish the project - $(buildConfiguration)'
   inputs:
-    SearchPattern: '**\bin\**\*.pdb'
-    PublishSymbols: false
-  continueOnError: true
+    command: 'publish'
+    projects: '**/*.csproj'
+    publishWebProjects: false
+    arguments: '--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(buildConfiguration)'
+    zipAfterPublish: true
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact'
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)'
-    ArtifactName: '$(Parameters.ArtifactName)'
-  condition: succeededOrFailed()
+- publish: '$(Build.ArtifactStagingDirectory)'
+  artifact: drop
 
 
