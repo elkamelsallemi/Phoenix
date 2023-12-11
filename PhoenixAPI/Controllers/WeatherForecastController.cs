@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Phoenix.Models;
+using Phoenix.Models.Models;
 
 namespace PhoenixAPI.Controllers
 {
@@ -30,12 +32,16 @@ namespace PhoenixAPI.Controllers
             .ToArray();
         }
 
-        [HttpGet("GetTemerature")]
-        public int Get(int id)
+        [HttpGet("GetTemperature")]
+        public string GetTemperature(int id)
         {
-            if (id != 1) return 0;
+            Temperature temp = new Temperature()
+            {
+                CountryId = "Tunisia",
+                Temp = 25
+            };
 
-            return 25;
+            return temp.ToString();
         }
     }
 }
