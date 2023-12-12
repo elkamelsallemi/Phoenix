@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Phoenix.Models" Version="1.0.1-CI-20231211-223602" />
+    <PackageReference Include="Phoenix.Models" Version="1.0.0-CI-20231211-222609" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 

@@ -39,6 +39,8 @@ stages:
         command: 'build'
         arguments: '--no-restore --configuration $(buildConfiguration)'
         projects: '**/*.csproj'
+        feedsToUse: 'select'
+        vstsFeed: 'db8ca479-0212-4cd1-8a09-2b3abcb94acd/8621e47e-89e8-49c1-87bb-1a7285608233'
 
     # Step 4: Publish the project to the specified output directory
     - task: DotNetCoreCLI@2
