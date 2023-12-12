@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Phoenix.Models.Models;
 
 namespace PhoenixAPI.Controllers
 {
@@ -6,36 +7,21 @@ namespace PhoenixAPI.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
-
-        private readonly ILogger<WeatherForecastController> _logger;
-
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
-        {
-            _logger = logger;
-        }
-
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
-        {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
-        }
 
         [HttpGet("GetTemerature")]
-        public int Get(int id)
+        public IActionResult Get(int id)
         {
-            if (id != 1) return 0;
+            Temperature temp = new Temperature();
 
-            return 25;
+            if (id == 0)
+            {
+                temp.CountryId = "0";
+                temp.Temp = 25;
+                return Ok(temp);
+            }
+
+            return NotFound("Country with this Id not Exist in database");
+            
         }
     }
 }

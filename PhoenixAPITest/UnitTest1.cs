@@ -2,41 +2,46 @@ using PhoenixAPI.Controllers;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;
 using Moq;
+using Microsoft.AspNetCore.Mvc;
+using Phoenix.Models.Models;
 
 namespace PhoenixAPITest
 {
     public class Tests
     {
-        [Test]
-        public void Get_ReturnsTemperatureForValidId()
+        [TestFixture]
+        public class WeatherForecastControllerTests
         {
-            // Arrange
-            var loggerMock = new Mock<ILogger<WeatherForecastController>>();
-            var controller = new WeatherForecastController(loggerMock.Object);
-            const int validId = 1;
+            [Test]
+            public void Get_ReturnsOkObjectResult_WhenIdIsZero()
+            {
+                // Arrange
+                var controller = new WeatherForecastController();
 
-            // Act
-            var result = controller.Get(validId);
+                // Act
+                var result = controller.Get(0);
 
-            // Assert
-            const int expectedTemperature = 25;
-            Assert.AreEqual(expectedTemperature, result);
-        }
+                // Assert
+                Assert.IsInstanceOf<OkObjectResult>(result);
+                var okResult = (OkObjectResult)result;
+                var model = (Temperature)okResult.Value;
 
-        [Test]
-        public void Get_ReturnsZeroForInvalidId()
-        {
-            // Arrange
-            var loggerMock = new Mock<ILogger<WeatherForecastController>>();
-            var controller = new WeatherForecastController(loggerMock.Object);
-            const int invalidId = 2;
+                Assert.AreEqual("0", model.CountryId);
+                Assert.AreEqual(25, model.Temp);
+            }
 
-            // Act
-            var result = controller.Get(invalidId);
+            [Test]
+            public void Get_ReturnsNotFoundResult_WhenIdIsNotZero()
+            {
+                // Arrange
+                var controller = new WeatherForecastController();
 
-            // Assert
-            const int expectedTemperature = 0;
-            Assert.AreEqual(expectedTemperature, result);
+                // Act
+                var result = controller.Get(1);
+
+                // Assert
+                Assert.IsInstanceOf<NotFoundObjectResult>(result);
+            }
         }
     }
 }
