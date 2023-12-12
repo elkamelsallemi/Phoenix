@@ -1,6 +1,6 @@
 # This Azure DevOps Pipeline automates the build and deployment process for a web application.
 # It consists of two stages: 'Build' and 'Deploy'. The 'Build' stage compiles and publishes
-# the web application, while the 'Deploy' stage deploys the application to an Azure App Service.
+# the web application, while the 'Deploy' stage deploys the application to an  Azure App Service.
 # author : Mr. Sallemi Elkamel
 
 trigger:
